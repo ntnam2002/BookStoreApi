@@ -34,8 +34,8 @@ exports.InsertTKKH = function (req, res) {
 
 // Thêm Khách hàng ( Khi khách hàng nhập thông tin )
 exports.InsertKH = function (req, res) {
-    let sql = 'INSERT INTO khachhang VALUES (?, ?, ?, ?, ?, ?, ?)';
-    db.query(sql, [req.body.makh, req.body.hoten, req.body.username, req.body.password, req.body.sdt, req.body.email, req.body.diachi], (err, response) => {
+    let sql = 'INSERT INTO khachhang VALUES (NULL, ?, ?, ?, ?, ?, ?)';
+    db.query(sql, [req.body.hoten, req.body.username, req.body.password, req.body.sdt, req.body.email, req.body.diachi], (err, response) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: 'Internal Server Error' });

@@ -52,10 +52,10 @@ exports.EditAdmin = function (req, res) {
 
 // Thêm Admin
 exports.InsertAdmin = function (req, res) {
-    let sql = "INSERT INTO admin VALUES (?, ?, ?, ?)";
+    let sql = "INSERT INTO admin VALUES (NULL, ?, ?, ?)";
     db.query(
         sql,
-        [req.body.id, req.body.hoten, req.body.username, req.body.password],
+        [req.body.hoten, req.body.username, req.body.password],
         (err, response) => {
             if (err) {
                 console.error(err);

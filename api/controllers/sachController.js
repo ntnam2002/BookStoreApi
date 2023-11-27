@@ -7,11 +7,12 @@ const db = require("../db");
 // Sửa Sach
 exports.EditSach = function (req, res) {
     let sql =
-        "UPDATE sach SET tensach=?, tacgia=?, image=?, mota=?, gia=?, soluong=? WHERE masp=?";
+        "UPDATE sach SET tensach=?, theloai=?, tacgia=?, image=?, mota=?, gia=?, soluong=? WHERE masp=?";
     db.query(
         sql,
         [
             req.body.tensach,
+            req.body.theloai,
             req.body.tacgia,
             req.body.image,
             req.body.mota,
@@ -34,12 +35,13 @@ exports.EditSach = function (req, res) {
 
 // Thêm Sach
 exports.InsertSach = function (req, res) {
-    let sql = "INSERT INTO sach VALUES (?, ?, ?, ?, ?, ?, ?)";
+    let sql = "INSERT INTO sach VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
     db.query(
         sql,
         [
-            req.body.masp,
+            // req.body.masp,
             req.body.tensach,
+            req.body.theloai,
             req.body.tacgia,
             req.body.image,
             req.body.mota,
@@ -118,6 +120,7 @@ exports.DeleteSach = function (req, res) {
 exports.getSachByinfo = function (req, res) {
     let tensach = req.body.tensach;
     let tacgia = req.body.tacgia;
+    let theloai = req.body.theloai;
     let minPrice = req.body.minPrice;
     let maxPrice = req.body.maxPrice;
 
@@ -129,6 +132,10 @@ exports.getSachByinfo = function (req, res) {
 
     if (tacgia) {
         sql += ' AND tacgia LIKE "%' + tacgia + '%"';
+    }
+
+    if (theloai) {
+        sql += ' AND theloai LIKE "%' + theloai + '%"';
     }
 
     if (minPrice !== undefined && maxPrice !== undefined) {

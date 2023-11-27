@@ -59,10 +59,10 @@ exports.Insertdondathang = function (req, res) {
         const totalAmount = req.body.soluong * productInfo[0].gia;
 
         // Thêm đơn đặt hàng vào cơ sở dữ liệu với tổng tiền đã tính
-        let insertOrderSQL = 'INSERT INTO dondathang VALUES (?, ?, ?, ?, ?)';
+        let insertOrderSQL = 'INSERT INTO dondathang VALUES (NULL, ?, ?, ?, ?)';
         db.query(
             insertOrderSQL,
-            [req.body.madh, req.body.makh, req.body.masp, req.body.soluong, totalAmount],
+            [req.body.makh, req.body.masp, req.body.soluong, totalAmount],
             (err, response) => {
                 if (err) {
                     console.error(err);
