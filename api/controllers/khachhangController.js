@@ -108,24 +108,24 @@ exports.getKHByinfo = function (req, res) {
         }
         res.json(response);
     });
+
 };
 
+// Kiểm tra trùng khach
+exports.CheckTrungKH = function (req, res) {
+    const username = req.query.username;
 
-// // Kiểm tra trùng sv
-// exports.CheckTrungSV = function (req, res) {
-//     const masv = req.query.masv;
+    const sql = "SELECT username FROM admin WHERE username = ?";
+    db.query(sql, [username], (err, rows) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Internal Server Error" });
+        }
 
-//     const sql = 'SELECT masv FROM sinhvien WHERE masv = ?';
-//     db.query(sql, [masv], (err, rows) => {
-//         if (err) {
-//             console.error(err);
-//             return res.status(500).json({ message: 'Internal Server Error' });
-//         }
-
-//         if (rows.length > 0) {
-//             res.json({ message: 'Sinh viên đã tồn tại' });
-//         } else {
-//             res.json({ message: 'Sinh viên không tồn tại' });
-//         }
-//     });
-// };
+        if (rows.length > 0) {
+            res.json({ message: "Tài khoản đã tồn tại" });
+        } else {
+            res.json({ message: "Tài khoản không tồn tại" });
+        }
+    });
+};

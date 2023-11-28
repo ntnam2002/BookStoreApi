@@ -153,10 +153,10 @@ exports.getSachByinfo = function (req, res) {
 
 // Kiểm tra trùng Sach
 exports.CheckTrungSach = function (req, res) {
-    const masp = req.query.masp;
+    const tensach = req.query.tensach;
 
-    const sql = "SELECT masp FROM sach WHERE masp = ?";
-    db.query(sql, [masp], (err, rows) => {
+    const sql = "SELECT tensach FROM sach WHERE tensach = ?";
+    db.query(sql, [tensach], (err, rows) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: "Internal Server Error" });

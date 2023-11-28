@@ -320,7 +320,7 @@ module.exports = function (app) {
         res.header("Content-Type", "application/json; charset=UTF-8");
         next();
     }, adminController.CheckTrungAdmin);
-
+    
     //khách hàng
     app.route("/khachhang").get(function (req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
@@ -384,4 +384,14 @@ module.exports = function (app) {
         res.header("Content-Type", "application/json; charset=UTF-8");
         next();
     }, khachhangController.getKHByinfo);
+    app.route("/khachhang/Check").get(function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "GET");
+        res.header(
+            "Access-Control-Allow-Headers",
+            "Content-Type, Authorization",
+        );
+        res.header("Content-Type", "application/json; charset=UTF-8");
+        next();
+    }, khachhangController.CheckTrungKH);
 };
