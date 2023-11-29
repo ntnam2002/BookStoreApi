@@ -139,13 +139,13 @@ exports.getSachByinfo = function (req, res) {
     }
 
     if (minPrice !== undefined && maxPrice !== undefined) {
-        sql += " AND gia BETWEEN " + minPrice + " AND " + maxPrice;
+        sql += " AND gia BETWEEN " + (minPrice ? minPrice : 0) + " AND " + (maxPrice ? maxPrice : 9999999);
     }
 
     db.query(sql, (err, response) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ message: "Internal Server Error" });
+            return res.status(500).json({ message: "Lỗi Nội Server" });
         }
         res.json(response);
     });
