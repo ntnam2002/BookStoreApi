@@ -88,6 +88,16 @@ module.exports = function (app) {
         res.header("Content-Type", "application/json; charset=UTF-8");
         next();
     }, sachController.GetAllSach);
+    app.route("/sach/theloai").get(function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "GET");
+        res.header(
+            "Access-Control-Allow-Headers",
+            "Content-Type, Authorization",
+        );
+        res.header("Content-Type", "application/json; charset=UTF-8");
+        next();
+    }, sachController.GetAllTheLoai);
     app.route("/sach")
         .get(function (req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");

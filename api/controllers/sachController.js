@@ -169,3 +169,16 @@ exports.CheckTrungSach = function (req, res) {
         }
     });
 };
+
+// Lấy toàn bộ thể loại Sach
+exports.GetAllTheLoai = function (req, res) {
+    let sql = "SELECT DISTINCT theloai FROM sach";
+    db.query(sql, (err, response) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Internal Server Error" });
+        }
+        res.json(response);
+    });
+};
+
