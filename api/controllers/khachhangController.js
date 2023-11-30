@@ -5,6 +5,34 @@ const mysql = require('mysql')
 const db = require('../db')
 
 
+// API - Login
+exports.LoginKH = function (req, res) {
+    try {
+        let username = req.body.username;
+        let password = req.body.password;
+
+        let sql = "SELECT * FROM khachhang WHERE username = ? AND password = ?";
+        db.query(sql, [username, password], (err, response) => {
+            if (err) {
+                console.error(err);
+                return res
+                    .status(500)
+                    .json({ message: "Internal Server Error" });
+            }
+
+            if (response.length === 0) {
+                return res
+                    .status(401)
+                    .json({ message: "Tài khoản không tồn tại" });
+            }
+
+            res.json({ message: "Login thành công" });
+        });
+    } catch (error) {
+        throw error;
+    }
+};
+
 // Sửa thông tin Khách hàng
 exports.EditKH = function (req, res) {
     let sql = 'UPDATE khachhang SET hoten=?, username=?, password=?, sdt=?, email=?, diachi=? WHERE makh=?';
