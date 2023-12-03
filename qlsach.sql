@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 27, 2023 lúc 03:32 PM
+-- Thời gian đã tạo: Th10 30, 2023 lúc 04:39 PM
 -- Phiên bản máy phục vụ: 10.4.24-MariaDB
 -- Phiên bản PHP: 8.1.6
 
@@ -116,14 +116,14 @@ CREATE TABLE `sach` (
 --
 
 INSERT INTO `sach` (`masp`, `tensach`, `theloai`, `tacgia`, `image`, `mota`, `gia`, `soluong`) VALUES
-(1, 'Tên sách mới lan 6', 'Nháp', 'Tác giả mới', 'https://truyenvkl.com/wp-content/uploads/2022/05/Harry-Potter-va-Hon-da-Phu-thuy.jpg', 'Mô tả mới', 100000, 50),
 (2, 'Bí quyết làm giàu', 'sách', 'Napoleon-hill', 'https://product.hstatic.net/200000301138/product/sach-bi-quyet-lam-giau-cua-napoleon-hill_7afd4d479a284a179022bf0c7e4e99ea.jpg', 'Harry khổ sở mong ngóng cho kì nghỉ hè kinh khủng với gia đình Dursley kết thúc. Nhưng một con gia tinh bé nhỏ tội nghiệp đã cảnh báo cho Harry biết về mối nguy hiểm chết người đang chờ cậu ở trường Hogwarts.\r\n\r\nTrở lại trường học, Harry nghe một tin đồn ', 86000, 25),
 (3, 'Harry Potter Và Hòn đá phù thủy', 'Truyện', 'J. K . Rowling', 'https://www.nxbtre.com.vn/Images/Book/nxbtre_full_21042022_030444.jpg', 'Harry khổ sở mong ngóng cho kì nghỉ hè kinh khủng với gia đình Dursley kết thúc. Nhưng một con gia tinh bé nhỏ tội nghiệp đã cảnh báo cho Harry biết về mối nguy hiểm chết người đang chờ cậu ở trường Hogwarts.\r\n\r\nTrở lại trường học, Harry nghe một tin đồn ', 240000, 50),
 (4, 'Harry Potter Và Phòng Chứa Bí Mật', 'Truyện', 'J. K . Rowling', 'https://product.hstatic.net/200000301138/product/8934974182290_808c50e562ac46738ea3b4e92189cc92_large.jpg', 'Harry khổ sở mong ngóng cho kì nghỉ hè kinh khủng với gia đình Dursley kết thúc. Nhưng một con gia tinh bé nhỏ tội nghiệp đã cảnh báo cho Harry biết về mối nguy hiểm chết người đang chờ cậu ở trường Hogwarts.\r\n\r\nTrở lại trường học, Harry nghe một tin đồn ', 170000, 68),
 (5, 'Harry Potter Và Tên Tù Nhân Ngục Azkaban', 'Truyện', 'J. K . Rowling', 'https://product.hstatic.net/200000301138/product/2_1e16caf13de7460b8b0dc7f454e7cc0f_large.png', 'Harry Potter may mắn sống sót đến tuổi 13, sau nhiều cuộc tấn công của Chúa tể hắc ám.\r\n\r\nNhưng hy vọng có một học kỳ yên ổn với Quidditch của cậu đã tiêu tan thành mây khói khi một kẻ điên cuồng giết người hàng loạt vừa thoát khỏi nhà tù Azkaban, với sự ', 205000, 100),
 (6, 'Harry Potter Và Chiếc Cốc Lửa', 'Truyện', 'J. K . Rowling', 'https://product.hstatic.net/200000301138/product/1_568e89b8232f4bb68d8da7770ee114c0_large.jpg', 'Khi giải Quidditch Thế giới bị cắt ngang bởi những kẻ ủng hộ Chúa tể Voldemort và sự trở lại của Dấu hiệu hắc ám khủng khiếp, Harry ý thức được rõ ràng rằng, Chúa tể Voldemort đang ngày càng mạnh hơn. Và để trở lại thế giới phép thuật, Chúa tể hắc ám cần ', 310000, 68),
 (7, 'Harry Potter Và Hội Phượng Hoàng', 'Truyện', 'J. K . Rowling', 'https://product.hstatic.net/200000301138/product/3_21e553400def4f018c589c0d79060918_large.png', 'Harry tức giận vì bị bỏ rơi ở nhà Dursley trong dịp hè, cậu ngờ rằng Chúa tể hắc ám Voldemort đang tập hợp lực lượng, và vì cậu có nguy cơ bị tấn công, những người Harry luôn coi là bạn đang cố che giấu tung tích cậu. Cuối cùng, sau khi được giải cứu, Har', 355000, 35),
-(8, 'Tên sách mới lan 7', 'Nháp', 'Tác giả mới', 'https://truyenvkl.com/wp-content/uploads/2022/05/Harry-Potter-va-Hon-da-Phu-thuy.jpg', 'Mô tả mới', 100000, 50);
+(8, 'Tên sách mới lan 7', 'Nháp', 'Tác giả mới', 'https://truyenvkl.com/wp-content/uploads/2022/05/Harry-Potter-va-Hon-da-Phu-thuy.jpg', 'Mô tả mới', 100000, 50),
+(12, '1', '1', '1', 'https://truyenvkl.com/wp-content/uploads/2022/05/Harry-Potter-va-Hon-da-Phu-thuy.jpg', '1', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -231,7 +231,7 @@ ALTER TABLE `khachhang`
 -- AUTO_INCREMENT cho bảng `sach`
 --
 ALTER TABLE `sach`
-  MODIFY `masp` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `masp` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT cho bảng `thanhtoan`
@@ -243,7 +243,7 @@ ALTER TABLE `thanhtoan`
 -- AUTO_INCREMENT cho bảng `vanphongpham`
 --
 ALTER TABLE `vanphongpham`
-  MODIFY `masp` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `masp` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
