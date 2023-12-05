@@ -28,41 +28,76 @@ exports.Editdondathang = function (req, res) {
             if (!productInfo || productInfo.length === 0) {
                 return res.status(404).json({ message: 'Không tìm thấy sản phẩm có mã này' });
             }
-//hung
-            // Lấy giá của sản phẩm từ bảng sách
-            let getProductPriceSQL = 'SELECT gia FROM sach WHERE masp = ?';
-            db.query(getProductPriceSQL, [req.body.masp], (err, productInfo) => {
+
+            // Lấy số lượng hiện tại từ bảng dondathang
+            let getCurrentQuantitySQL = 'SELECT soluong FROM dondathang WHERE madh = ?';
+            db.query(getCurrentQuantitySQL, [req.params.madh], (err, currentQuantityInfo) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).json({ message: 'Internal Server Error' });
                 }
 
-                // Kiểm tra xem sách có tồn tại không
-                if (!productInfo || productInfo.length === 0) {
-                    return res.status(404).json({ message: 'Sản phẩm không tồn tại' });
+                if (!currentQuantityInfo || currentQuantityInfo.length === 0) {
+                    return res.status(404).json({ message: 'Không tìm thấy đơn đặt hàng có mã này' });
                 }
+
+                // Tính chênh lệch giữa số lượng mới và số lượng hiện tại
+                const quantityDifferenceBeforeUpdate = req.body.soluong - currentQuantityInfo[0].soluong;
 
                 // Tính tổng tiền dựa trên giá mới và số lượng mới của sách
                 const newTotalAmount = req.body.soluong * productInfo[0].gia;
 
-                // Sửa đơn đặt hàng trong cơ sở dữ liệu với cập nhật tự động tongtien
-                let updateOrderSQL = 'UPDATE dondathang SET makh=?, masp=?, soluong=?, tongtien=?, trangthai=?, pttt=? WHERE madh=?';
-                db.query(
-                    updateOrderSQL,
-                    [req.body.makh, req.body.masp, req.body.soluong, newTotalAmount, req.body.trangthai, req.body.pttt, req.params.madh],
-                    (err, response) => {
-                        if (err) {
-                            console.error(err);
-                            return res.status(500).json({ message: 'Internal Server Error' });
-                        }
-
-                        res.json(response);
+                // Cập nhật số lượng trong bảng sách
+                let updateQuantitySQL = 'UPDATE sach SET soluong = soluong + ? WHERE masp = ?';
+                db.query(updateQuantitySQL, [quantityDifferenceBeforeUpdate, req.body.masp], (err, updateResponse) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).json({ message: 'Internal Server Error' });
                     }
-                );
+
+                    // Sửa đơn đặt hàng trong cơ sở dữ liệu với cập nhật tự động tongtien
+                    let updateOrderSQL = 'UPDATE dondathang SET makh=?, masp=?, soluong=?, tongtien=?, trangthai=?, pttt=? WHERE madh=?';
+                    db.query(
+                        updateOrderSQL,
+                        [req.body.makh, req.body.masp, req.body.soluong, newTotalAmount, req.body.trangthai, req.body.pttt, req.params.madh],
+                        (err, response) => {
+                            if (err) {
+                                console.error(err);
+                                return res.status(500).json({ message: 'Internal Server Error' });
+                            }
+
+                            // Lấy số lượng mới sau khi update từ bảng dondathang
+                            let getUpdatedQuantitySQL = 'SELECT soluong FROM dondathang WHERE madh = ?';
+                            db.query(getUpdatedQuantitySQL, [req.params.madh], (err, updatedQuantityInfo) => {
+                                if (err) {
+                                    console.error(err);
+                                    return res.status(500).json({ message: 'Internal Server Error' });
+                                }
+
+                                if (!updatedQuantityInfo || updatedQuantityInfo.length === 0) {
+                                    return res.status(404).json({ message: 'Không tìm thấy đơn đặt hàng có mã này' });
+                                }
+
+                                // Tính chênh lệch giữa số lượng mới và số lượng hiện tại sau khi update
+                                const quantityDifferenceAfterUpdate = updatedQuantityInfo[0].soluong - currentQuantityInfo[0].soluong;
+
+                                console.log('Chênh lệch số lượng trước khi sửa đổi:', quantityDifferenceBeforeUpdate);
+                                console.log('Chênh lệch số lượng sau khi sửa đổi:', quantityDifferenceAfterUpdate);
+
+                                res.json({
+                                    response,
+                                    quantityDifferenceBeforeUpdate,  // Chênh lệch số lượng trước khi sửa đổi
+                                    quantityDifferenceAfterUpdate,   // Chênh lệch số lượng sau khi sửa đổi
+                                });
+                            });
+                        }
+                    );
+                });
             });
         });
     });
 };
+
 
 // Thêm dondathang
 exports.Insertdondathang = function (req, res) {
