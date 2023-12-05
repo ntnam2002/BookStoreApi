@@ -90,7 +90,7 @@ exports.GetAllSach = function (req, res) {
 // Lấy toàn bộ Sách với hỗ trợ phân trang
 exports.PhanTrangSach = function (req, res) {
     const start = parseInt(req.query.start) || 0;
-    const length = parseInt(req.query.length) || 10; 
+    const length = parseInt(req.query.length) || 10;
     const sql = "SELECT * FROM sach LIMIT " + length + " OFFSET " + start;
     db.query(sql, (err, response) => {
         if (err) {
@@ -118,11 +118,7 @@ exports.DeleteSach = function (req, res) {
 
 // Tìm kiếm Sách theo tên sách và khoảng giá
 exports.getSachByinfo = function (req, res) {
-    let tensach = req.body.tensach;
-    let tacgia = req.body.tacgia;
-    let theloai = req.body.theloai;
-    let minPrice = req.body.minPrice;
-    let maxPrice = req.body.maxPrice;
+    const { tensach, tacgia, theloai, minPrice, maxPrice } = req.body;
 
     let sql = "SELECT * FROM sach WHERE 1=1";
 
@@ -134,12 +130,17 @@ exports.getSachByinfo = function (req, res) {
         sql += ' AND tacgia LIKE "%' + tacgia + '%"';
     }
 
-    if (theloai) {
-        sql += ' AND theloai LIKE "%' + theloai + '%"';
+    if (theloai && theloai.length > 0) {
+        const genresCondition = theloai.map((genre) => `"${genre}"`).join(",");
+        sql += ` AND theloai IN (${genresCondition})`;
     }
 
     if (minPrice !== undefined && maxPrice !== undefined) {
-        sql += " AND gia BETWEEN " + (minPrice ? minPrice : 0) + " AND " + (maxPrice ? maxPrice : 9999999);
+        sql +=
+            " AND gia BETWEEN " +
+            (minPrice ? minPrice : 0) +
+            " AND " +
+            (maxPrice ? maxPrice : 9999999);
     }
 
     db.query(sql, (err, response) => {
@@ -181,4 +182,3 @@ exports.GetAllTheLoai = function (req, res) {
         res.json(response);
     });
 };
-

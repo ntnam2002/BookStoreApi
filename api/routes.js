@@ -98,8 +98,7 @@ module.exports = function (app) {
         res.header("Content-Type", "application/json; charset=UTF-8");
         next();
     }, sachController.GetAllTheLoai);
-    app.route("/sach")
-        .get(function (req, res, next) {
+    app.route("/sach").get(function (req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Methods", "GET");
         res.header(
@@ -330,7 +329,7 @@ module.exports = function (app) {
         res.header("Content-Type", "application/json; charset=UTF-8");
         next();
     }, adminController.CheckTrungAdmin);
-    
+
     //khách hàng
     app.route("/khachhang").get(function (req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
