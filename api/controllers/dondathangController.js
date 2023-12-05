@@ -28,7 +28,7 @@ exports.Editdondathang = function (req, res) {
             if (!productInfo || productInfo.length === 0) {
                 return res.status(404).json({ message: 'Không tìm thấy sản phẩm có mã này' });
             }
-
+//hung
             // Lấy giá của sản phẩm từ bảng sách
             let getProductPriceSQL = 'SELECT gia FROM sach WHERE masp = ?';
             db.query(getProductPriceSQL, [req.body.masp], (err, productInfo) => {
