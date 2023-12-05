@@ -208,18 +208,44 @@ exports.GetAlldondathang = function (req, res) {
 
 // Xóa dondathang
 exports.Deletedondathang = function (req, res) {
-    let sql = 'DELETE FROM dondathang WHERE madh = ?';
-    db.query(sql, [req.params.madh], (err, response) => {
+    // Retrieve masp and soluong from the dondathang being deleted
+    let getDondathangInfoSQL = 'SELECT masp, soluong FROM dondathang WHERE madh = ?';
+    db.query(getDondathangInfoSQL, [req.params.madh], (err, dondathangInfo) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: 'Internal Server Error' });
         }
-        if (response.affectedRows === 0) {
-            return res.status(404).json({ message: 'Tài khoản không tồn tại' });
+
+        if (!dondathangInfo || dondathangInfo.length === 0) {
+            return res.status(404).json({ message: 'Đơn đặt hàng không tồn tại' });
         }
-        res.json(response);
+
+        // Delete the dondathang
+        let deleteDondathangSQL = 'DELETE FROM dondathang WHERE madh = ?';
+        db.query(deleteDondathangSQL, [req.params.madh], (err, response) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ message: 'Internal Server Error' });
+            }
+
+            if (response.affectedRows === 0) {
+                return res.status(404).json({ message: 'Đơn đặt hàng không tồn tại' });
+            }
+
+            // Update soluong in the sach table
+            let updateSachSQL = 'UPDATE sach SET soluong = soluong + ? WHERE masp = ?';
+            db.query(updateSachSQL, [dondathangInfo[0].soluong, dondathangInfo[0].masp], (err, updateResponse) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ message: 'Internal Server Error' });
+                }
+
+                res.json({ message: 'Đã xóa đơn đặt hàng và cập nhật số lượng sách' });
+            });
+        });
     });
 };
+
 
 // Tìm kiếm dơn đạt hàng theo tên và khoảng tổng tiền
 exports.getdondathangByinfo = function (req, res) {
