@@ -47,9 +47,15 @@ exports.Editdondathang = function (req, res) {
                 // Tính tổng tiền dựa trên giá mới và số lượng mới của sách
                 const newTotalAmount = req.body.soluong * productInfo[0].gia;
 
+                // Kiểm tra nếu sau khi update, số lượng sách trở nên âm, thì trả về lỗi
+                const updatedQuantity = productInfo[0].soluong - quantityDifferenceBeforeUpdate;
+                if (updatedQuantity < 0) {
+                    return res.status(400).json({ message: 'Không đủ sách để cập nhật' });
+                }
+
                 // Cập nhật số lượng trong bảng sách
-                let updateQuantitySQL = 'UPDATE sach SET soluong = soluong + ? WHERE masp = ?';
-                db.query(updateQuantitySQL, [quantityDifferenceBeforeUpdate, req.body.masp], (err, updateResponse) => {
+                let updateQuantitySQL = 'UPDATE sach SET soluong = ? WHERE masp = ?';
+                db.query(updateQuantitySQL, [updatedQuantity, req.body.masp], (err, updateResponse) => {
                     if (err) {
                         console.error(err);
                         return res.status(500).json({ message: 'Internal Server Error' });
