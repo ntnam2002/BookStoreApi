@@ -64,7 +64,6 @@ exports.Editdondathang = function (req, res) {
     });
 };
 
-
 // Thêm dondathang
 exports.Insertdondathang = function (req, res) {
     // Kiểm tra xem makh có tồn tại không
@@ -92,28 +91,45 @@ exports.Insertdondathang = function (req, res) {
             }
 
             // Nếu cả makh và masp đều tồn tại, tiếp tục xử lý và thêm đơn đặt hàng
-            let getProductInfoSQL = 'SELECT gia FROM sach WHERE masp = ?';
+            let getProductInfoSQL = 'SELECT gia, soluong AS currentQuantity FROM sach WHERE masp = ?';
             db.query(getProductInfoSQL, [req.body.masp], (err, productInfo) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).json({ message: 'Internal Server Error' });
                 }
 
+                // Kiểm tra số lượng đặt hàng có vượt quá số lượng hiện tại không
+                const requestedQuantity = req.body.soluong;
+                const currentQuantity = productInfo[0].currentQuantity;
+
+                if (requestedQuantity > currentQuantity) {
+                    return res.status(400).json({ message: 'Số lượng đặt hàng vượt quá số lượng hiện có' });
+                }
+
                 // Tính tổng tiền dựa trên giá và số lượng của sách
-                const totalAmount = req.body.soluong * productInfo[0].gia;
+                const totalAmount = requestedQuantity * productInfo[0].gia;
 
                 // Thêm đơn đặt hàng vào cơ sở dữ liệu với tổng tiền đã tính
                 let insertOrderSQL = 'INSERT INTO dondathang VALUES (NULL, ?, ?, ?, ?, ?, ?)';
                 db.query(
                     insertOrderSQL,
-                    [req.body.makh, req.body.masp, req.body.soluong, totalAmount, req.body.trangthai, req.body.pttt],
+                    [req.body.makh, req.body.masp, requestedQuantity, totalAmount, req.body.trangthai, req.body.pttt],
                     (err, response) => {
                         if (err) {
                             console.error(err);
                             return res.status(500).json({ message: 'Internal Server Error' });
                         }
 
-                        res.json(response);
+                        // Cập nhật số lượng trong bảng sách
+                        let updateQuantitySQL = 'UPDATE sach SET soluong = soluong - ? WHERE masp = ?';
+                        db.query(updateQuantitySQL, [requestedQuantity, req.body.masp], (err, updateResponse) => {
+                            if (err) {
+                                console.error(err);
+                                return res.status(500).json({ message: 'Internal Server Error' });
+                            }
+
+                            res.json(response);
+                        });
                     }
                 );
             });
