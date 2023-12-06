@@ -445,8 +445,5 @@ exports.GetAlldondathangWithCustomerInfo = function (req, res) {
         res.json(response);
     });
 };
-<<<<<<< HEAD
 
 
-=======
->>>>>>> b73990915d1c94da2f19c56e5057dab2f3355d7f
