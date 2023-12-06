@@ -20,8 +20,8 @@ exports.EditVPP = function (req, res) {
 
 // Thêm GV
 exports.InsertVPP = function (req, res) {
-    let sql = 'INSERT INTO vanphongpham VALUES (?, ?, ?, ?, ?, ?)';
-    db.query(sql, [req.body.masp, req.body.tensp, req.body.image, req.body.mota, req.body.gia, req.body.soluong], (err, response) => {
+    let sql = 'INSERT INTO vanphongpham VALUES (NULL, ?, ?, ?, ?, ?)';
+    db.query(sql, [req.body.tensp, req.body.image, req.body.mota, req.body.gia, req.body.soluong], (err, response) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: 'Internal Server Error' });
@@ -98,12 +98,12 @@ exports.getVPPByinfo = function (req, res) {
 };
 
 
-// Kiểm tra trùng gv
+// Kiểm tra trùng tensp
 exports.CheckTrungVPP = function (req, res) {
-    const masp = req.query.masp;
+    const tensp = req.query.tensp;
 
-    const sql = 'SELECT masp FROM vanphongpham WHERE masp = ?';
-    db.query(sql, [masp], (err, rows) => {
+    const sql = 'SELECT tensp FROM vanphongpham WHERE tensp = ?';
+    db.query(sql, [tensp], (err, rows) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: 'Internal Server Error' });

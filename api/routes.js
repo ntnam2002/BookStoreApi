@@ -76,6 +76,16 @@ module.exports = function (app) {
         res.header("Content-Type", "application/json; charset=UTF-8");
         next();
     }, dondathangController.CheckTrungdondathang);
+    app.route("/dondathangWithkhachhang").get(function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "GET");
+        res.header(
+            "Access-Control-Allow-Headers",
+            "Content-Type, Authorization",
+        );
+        res.header("Content-Type", "application/json; charset=UTF-8");
+        next();
+    }, dondathangController.GetAlldondathangWithCustomerInfo);
 
     // sách
     app.route("/sach").get(function (req, res, next) {
@@ -88,8 +98,17 @@ module.exports = function (app) {
         res.header("Content-Type", "application/json; charset=UTF-8");
         next();
     }, sachController.GetAllSach);
-    app.route("/sach")
-        .get(function (req, res, next) {
+    app.route("/sach/theloai").get(function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "GET");
+        res.header(
+            "Access-Control-Allow-Headers",
+            "Content-Type, Authorization",
+        );
+        res.header("Content-Type", "application/json; charset=UTF-8");
+        next();
+    }, sachController.GetAllTheLoai);
+    app.route("/sach").get(function (req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Methods", "GET");
         res.header(
@@ -332,6 +351,16 @@ module.exports = function (app) {
         res.header("Content-Type", "application/json; charset=UTF-8");
         next();
     }, khachhangController.GetAllKH);
+    app.route("/khachhang/LoginKH").post(function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "POST");
+        res.header(
+            "Access-Control-Allow-Headers",
+            "Content-Type, Authorization",
+        );
+        res.header("Content-Type", "application/json; charset=UTF-8");
+        next();
+    }, khachhangController.LoginKH);
     app.route("/khachhang/EditIF/:makh").get(function (req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Methods", "GET");
@@ -384,4 +413,14 @@ module.exports = function (app) {
         res.header("Content-Type", "application/json; charset=UTF-8");
         next();
     }, khachhangController.getKHByinfo);
+    app.route("/khachhang/Check").get(function (req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Methods", "GET");
+        res.header(
+            "Access-Control-Allow-Headers",
+            "Content-Type, Authorization",
+        );
+        res.header("Content-Type", "application/json; charset=UTF-8");
+        next();
+    }, khachhangController.CheckTrungKH);
 };

@@ -18,6 +18,15 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.options('*', (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+    res.header("Content-Type", "application/json; charset=UTF-8");
+    res.sendStatus(204);
+});
+
+
 // Middleware xử lý lỗi
 app.use(function (err, req, res, next) {
     console.error(err);
@@ -38,3 +47,4 @@ app.listen(port, (err) => {
         console.log('RESTful API server started on: ' + port);
     }
 });
+
