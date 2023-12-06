@@ -3,6 +3,7 @@
 const util = require('util');
 const mysql = require('mysql');
 const db = require('../db');
+
 // Sửa dondathang với cập nhật tự động tongtien khi soluong thay đổi
 exports.Editdondathang = function (req, res) {
     // Kiểm tra xem makh có tồn tại không
@@ -300,3 +301,18 @@ exports.CheckTrungdondathang = function (req, res) {
         }
     });
 };
+
+exports.GetAlldondathangWithCustomerInfo = function (req, res) {
+    let sql = 'SELECT dondathang.*, khachhang.makh, khachhang.hoten, khachhang.sdt, khachhang.email, khachhang.diachi ' +
+              'FROM dondathang ' +
+              'JOIN khachhang ON dondathang.makh = khachhang.makh';
+
+    db.query(sql, (err, response) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+        res.json(response);
+    });
+};
+
