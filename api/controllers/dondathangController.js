@@ -301,13 +301,25 @@ exports.CheckTrungdondathang = function (req, res) {
         }
     });
 };
-
 exports.GetAlldondathangWithCustomerInfo = function (req, res) {
-    let sql = 'SELECT dondathang.*, khachhang.makh, khachhang.hoten, khachhang.sdt, khachhang.email, khachhang.diachi ' +
-              'FROM dondathang ' +
-              'JOIN khachhang ON dondathang.makh = khachhang.makh';
+    // Lấy giá trị makh từ tham số truy vấn
+    const makh = req.query.makh;
 
-    db.query(sql, (err, response) => {
+    // Kiểm tra xem makh có tồn tại và có phải là một số không
+    if (!makh || isNaN(makh)) {
+        return res.status(400).json({ message: 'Invalid or missing makh parameter' });
+    }
+
+    let sql = `
+        SELECT dondathang.madh, dondathang.makh, dondathang.masp, dondathang.soluong, dondathang.tongtien, 
+               dondathang.trangthai, dondathang.pttt, khachhang.hoten, khachhang.sdt, khachhang.email, khachhang.diachi
+        FROM dondathang
+        JOIN khachhang ON dondathang.makh = khachhang.makh
+        WHERE dondathang.makh = ?
+    `;
+
+    // Truyền giá trị makh vào truy vấn
+    db.query(sql, [makh], (err, response) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ message: 'Internal Server Error' });
@@ -315,4 +327,5 @@ exports.GetAlldondathangWithCustomerInfo = function (req, res) {
         res.json(response);
     });
 };
+
 
