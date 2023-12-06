@@ -118,12 +118,15 @@ exports.DeleteSach = function (req, res) {
 
 // Tìm kiếm Sách theo tên sách và khoảng giá
 exports.getSachByinfo = function (req, res) {
-    const { tensach, tacgia, theloai, minPrice, maxPrice } = req.body;
+    const { masp, tensach, tacgia, theloai, minPrice, maxPrice } = req.body;
 
     let sql = "SELECT * FROM sach WHERE 1=1";
 
     if (tensach) {
         sql += ' AND tensach LIKE "%' + tensach + '%"';
+    }
+    if (masp) {
+        sql += ' AND masp LIKE "%' + masp + '%"';
     }
 
     if (tacgia) {
